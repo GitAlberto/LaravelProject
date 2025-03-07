@@ -1,17 +1,18 @@
 <?php
-
+ 
 namespace App\Models;
-
+ 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Illuminate\Database\Eloquent\Relations\HasOne; // Importation de la relation HasOne
+ 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-
+ 
     /**
      * The attributes that are mass assignable.
      *
@@ -22,7 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
+ 
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -32,7 +33,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
+ 
     /**
      * Get the attributes that should be cast.
      *
@@ -44,5 +45,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+ 
+    /**
+     * Définition de la relation One-to-One avec UserProfile.
+     * Un utilisateur possède un seul profil.
+     */
+    public function profile(): HasOne
+    {
+        return $this->hasOne(UserProfile::class);
     }
 }
