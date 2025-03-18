@@ -15,7 +15,7 @@
         </div>
     @endif
 
-    <form action="{{ route('register') }}" method="POST">
+    <form action="{{ route('register.profile') }}" method="POST">
         @csrf 
 
         {{-- 🔹 Nom et Prénom --}}
@@ -69,5 +69,7 @@
 
         <button type="submit" class="btn btn-primary">S'inscrire</button>
     </form>
+    <br>
+    <br><br><br>
 </div>
 @endsection
