@@ -26,13 +26,11 @@ class EventUser extends Model
  
     // Relation avec le modèle Event
 
-    public function event()
-
-    {
-
-        return $this->belongsTo(Event::class);
-
-    }
+   // Relation plusieurs-à-plusieurs avec Event
+   public function events()
+   {
+       return $this->belongsToMany(Event::class, 'event_user', 'user_id', 'event_id');
+   }
 
 }
 

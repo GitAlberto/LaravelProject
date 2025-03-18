@@ -34,11 +34,17 @@
                     <input type="date" name="date" id="date" class="form-control" required>
                 </div>
 
-                <!-- Catégorie -->
+                                <!-- Catégorie -->
                 <div class="mb-3">
                     <label for="category" class="form-label">Catégorie</label>
-                    <input type="text" name="category" id="category" class="form-control" required>
+                    <select name="category_id" id="category" class="form-control" required>
+                        <option value="">-- Sélectionner une catégorie --</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
+
 
                 <!-- Nombre max de participants -->
                 <div class="mb-3">
@@ -51,6 +57,8 @@
                     <button type="submit" class="btn btn-success">Créer l'événement</button>
                     <a href="{{ route('events.index') }}" class="btn btn-secondary">Annuler</a>
                 </div>
+                <br>
+                <br>
             </form>
         </div>
     </div>
