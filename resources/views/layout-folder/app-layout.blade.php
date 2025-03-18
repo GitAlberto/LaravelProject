@@ -24,7 +24,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="/">🏆 SportEvents</a>
+        <a class="navbar-brand" href="/events/getall">🏆 SportEvents</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -32,10 +32,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/">Accueil</a>
+                    <a class="nav-link active" href="/events/getall">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/search">Rechercher</a>
+                    <a class="nav-link active" href="/events/my-events">Mes événements</a>
                 </li>
             </ul>
 

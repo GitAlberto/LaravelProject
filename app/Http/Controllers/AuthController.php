@@ -3,41 +3,60 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    
     /**
-     * Inscription d'un utilisateur.
-     */
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+ * Inscription d'un utilisateur avec création automatique de son profil.
+ */
+public function register(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8|confirmed',
+        'LastName' => 'required|string',
+        'FirstName' => 'required|string',
+        'CP' => 'nullable|string',
+        'City' => 'nullable|string',
+        'Age' => 'nullable|integer',
+        'Sex' => 'nullable|string|in:male,female',
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    // Création de l'utilisateur
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+    ]);
 
-        // Générer un token Sanctum
-        $token = $user->createToken('auth_token')->plainTextToken;
+    // Création du profil utilisateur lié
+    $profile = UserProfile::create([
+        'user_id' => $user->id,
+        'LastName' => $request->LastName,
+        'FirstName' => $request->FirstName,
+        'CP' => $request->CP,
+        'City' => $request->City,
+        'Age' => $request->Age,
+        'Sex' => $request->Sex,
+    ]);
 
-        return response()->json([
-            'message' => 'Utilisateur créé avec succès',
-            'user' => $user,
-            'token' => $token,
-        ], 201);
-    }
+    // Générer un token Sanctum
+    $token = $user->createToken('auth_token')->plainTextToken;
 
-    /**
-     * Connexion d'un utilisateur.
-     */
+    return response()->json([
+        'message' => 'Utilisateur et profil créés avec succès',
+        'user' => $user,
+        'profile' => $profile,
+        'token' => $token,
+    ], 201);
+}
+
+  
     public function login(Request $request)
     {
         $request->validate([

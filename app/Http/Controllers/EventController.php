@@ -54,16 +54,49 @@ class EventController extends Controller
         return redirect()->route('events.index')->with('success', 'Événement créé avec succès.');
     }
 
+        public function edit($id)
+    {
+        $event = Event::findOrFail($id); // Trouve l'événement ou retourne une erreur 404
+        return view('event-gestion.event-edit', compact('event'));
+    }
+
+
     public function update(Request $request, $id)
     {
+        // Validation des données
+        $validatedData = $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'location' => 'required|string',
+            'date' => 'required|date',
+            'category' => 'required|string',
+            'max_participants' => 'required|integer',
+        ]);
+    
+        // Trouver l'événement ou retourner une erreur 404
         $event = Event::findOrFail($id);
-        $event->update($request->all());
-        return response()->json($event);
+    
+        //redefinition du slug
+        $slug = Str::slug($request->input('title'));
+        // Mettre à jour uniquement les champs nécessaires
+        $event->update([
+            'title' => $validatedData['title'],
+            'slug' => $slug,
+            'description' => $validatedData['description'],
+            'location' => $validatedData['location'],
+            'date' => $validatedData['date'],
+            'category' => $validatedData['category'],
+            'max_participants' => $validatedData['max_participants'],
+        ]);
+    
+        // Redirection avec un message de succès
+        return redirect()->route('events.index')->with('success', 'Événement mis à jour avec succès.');
     }
+    
 
     public function destroy($id)
     {
         Event::destroy($id);
-        return response()->json(['message' => 'Événement supprimé']);
+        return redirect()->route('events.index')->with('success', 'Suppression réussie !');
     }
 }

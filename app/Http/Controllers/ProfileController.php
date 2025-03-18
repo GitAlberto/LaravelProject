@@ -9,13 +9,18 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return response()->json(UserProfile::all());
+          // Récupère tous les événements et les pagine avec 5 événements par page
+          $profiles = UserProfile::paginate(10);
+
+          // Retourne la vue avec les événements paginés
+          return view('profile-gestion.listProfile', compact('profiles'));
     }
 
     public function show($id)
     {
         $profile = UserProfile::findOrFail($id);
-        return response()->json($profile);
+        // Retourner la vue du détails du profile
+        return view('profile-gestion.OneProfile', compact('profile'));
     }
 
     public function store(Request $request)

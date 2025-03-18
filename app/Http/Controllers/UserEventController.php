@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EventUser;
+use App\Models\UserEvent;
 use Illuminate\Http\Request;
 
 class UserEventController extends Controller
@@ -26,7 +27,9 @@ class UserEventController extends Controller
 
     public function userEvents($userId)
     {
-        return response()->json(EventUser::where('user_id', $userId)->get());
+          // Récupère les événements auxquels l'utilisateur est inscrit via la relation EventUser
+        $events = EventUser::paginate(5);  // On suppose qu'il y a une relation 'events' dans ton modèle User
+        return view('events.User-listEvent', compact('userevents'));
     }
 
     public function eventParticipants($eventId)
