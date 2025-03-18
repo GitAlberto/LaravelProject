@@ -13,7 +13,7 @@
             <p><strong>Catégorie :</strong> {{ $event->category }}</p>
             <p><strong>Description :</strong></p>
             <p>{{ $event->description }}</p>
-            <p><strong>Catégorie :</strong> {{ $event->max_participants }}</p>
+            <p><strong>Max participants :</strong> {{ $event->max_participants }}</p>
         </div>
         <div class="card-footer text-end">
             <a href="{{ route('events.index') }}" class="btn btn-primary">Retour à la liste</a>

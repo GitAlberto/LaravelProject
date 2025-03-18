@@ -23,7 +23,7 @@ class ProfileController extends Controller
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'LastName' => 'required|string',
-            'FirstName' => 'required|string',
+            'FistName' => 'required|string',
             'CP' => 'nullable|string',
             'City' => 'nullable|string',
             'Age' => 'nullable|integer',

@@ -23,7 +23,7 @@ class SearchController extends Controller
 
         // Recherche dans UserProfile (nom, prénom, ville)
         $users = UserProfile::where('LastName', 'LIKE', "%{$query}%")
-            ->orWhere('FirstName', 'LIKE', "%{$query}%")
+            ->orWhere('FistName', 'LIKE', "%{$query}%")
             ->orWhere('City', 'LIKE', "%{$query}%")
             ->get();
 

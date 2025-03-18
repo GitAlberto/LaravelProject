@@ -17,6 +17,13 @@
             text-align: center;
             padding: 10px 0;
         }
+        .container {
+       max-height: 80vh; /* Limite la hauteur du formulaire */
+       overflow-y: auto; /* Active le scroll si besoin */
+       padding-bottom: 20px; /* Ajoute un peu d'espace pour voir le bouton */
+         }
+
+
     </style>
 </head>
 <body>
@@ -107,6 +114,10 @@
         }
     }
 </script>
+
+
+
+
 
 </body>
 </html>

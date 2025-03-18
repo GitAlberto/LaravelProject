@@ -37,4 +37,12 @@
     {{ $events->links() }} <!-- Liens de pagination -->
 </div>
 
+<div class="d-flex flex-column">
+    <a href="{{ route('register') }}" class="btn btn-primary mb-2">S'inscrire</a>
+    <a href="{{ route('login') }}" class="btn btn-secondary">Connexion</a>
+</div>
+
+
+
+
 @endsection
