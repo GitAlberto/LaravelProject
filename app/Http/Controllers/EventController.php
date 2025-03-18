@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -17,6 +18,15 @@ class EventController extends Controller
         return view('event-gestion.listEvent', compact('events'));
     }
 
+    public function eventsManage()
+    {
+        // Récupère tous les événements et les pagine avec 5 événements par page
+        $events = Event::paginate(10);
+
+        // Retourne la vue avec les événements paginés
+        return view('event-gestion.listEventManage', compact('events'));
+    }
+
     public function show($id)
     {
         $event = Event::findOrFail($id);
@@ -26,7 +36,8 @@ class EventController extends Controller
 
     public function create()
     {
-        return view('event-gestion.createEvent'); 
+        $categories = Category::all(); // Récupère toutes les catégories
+        return view('event-gestion.createEvent', compact('categories')); 
     }
     public function store(Request $request)
     {
@@ -99,4 +110,31 @@ class EventController extends Controller
         Event::destroy($id);
         return redirect()->route('events.index')->with('success', 'Suppression réussie !');
     }
+
+
+        public function search(Request $request)
+    {
+        // Récupérer les paramètres de recherche
+        $query = Event::query();
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        if ($request->filled('location')) {
+            $query->where('location', 'like', '%' . $request->location . '%');
+        }
+
+        
+        // Récupérer les résultats avec pagination (5 événements par page)
+        $events = $query->paginate(5);
+
+        // Retourner la vue avec les résultats
+        return view('event-gestion.listEvent', compact('events'));
+    }
+
 }

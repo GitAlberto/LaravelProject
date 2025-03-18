@@ -2,34 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\EventUser;
-use App\Models\UserEvent;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class UserEventController extends Controller
 {
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'User not authenticated'], 401);
+        }
+
         $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'event_id' => 'required|exists:events,id',
+            'event_id' => 'required|exists:events,id',  
         ]);
 
-        $eventUser = EventUser::create($request->all());
-        return response()->json($eventUser, 201);
+        // Vérifier si l'utilisateur est déjà inscrit
+        if (EventUser::where('user_id', Auth::id())->where('event_id', $request->event_id)->exists()) {
+            return response()->json(['error' => 'User already registered for this event'], 400);
+        }
+
+        // Inscription
+        EventUser::create([
+            'user_id' => Auth::id(),
+            'event_id' => $request->event_id,
+        ]);
+
+        $userevents = EventUser::where('user_id', Auth::id())->get();
+        return redirect()->route('events.subscribe')->with('success', 'Inscription réussie ! A bientôt !');
+
     }
 
     public function destroy($id)
     {
-        EventUser::destroy($id);
+        $eventUser = EventUser::where('id', $id)->where('user_id', Auth::id())->first();
+
+        if (!$eventUser) {
+            return response()->json(['error' => 'Unauthorized or not found'], 403);
+        }
+
+        $eventUser->delete();
         return response()->json(['message' => 'Désinscription réussie']);
     }
 
-    public function userEvents($userId)
+    public function showUserEvents()
     {
-          // Récupère les événements auxquels l'utilisateur est inscrit via la relation EventUser
-        $events = EventUser::paginate(5);  // On suppose qu'il y a une relation 'events' dans ton modèle User
-        return view('events.User-listEvent', compact('userevents'));
+        $user = auth()->user();
+
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        $userevents = $user->events()->paginate(10);
+
+        return view('user.events', compact('userevents'));
     }
 
     public function eventParticipants($eventId)

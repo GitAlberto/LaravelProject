@@ -25,12 +25,13 @@
                     @foreach($profiles as $profile)
                         <tr>
                             <td>{{ $profile->id }}</td>
-                            <td>{{ $profile->first_name }}</td>
-                            <td>{{ $profile->postal_code }}</td>
+                            <td>{{ $profile->fist_name }}</td>
+                            <td>{{ $profile->user->name }}</td>
+                            <td>{{ $profile->postale_code }}</td>
                             <td>{{ $profile->city }}</td>
                             <td>{{ $profile->age }}</td>
                             <td>{{ ucfirst($profile->sex) }}</td> <!-- Affiche 'Male' ou 'Female' -->
-                            <td>{{ $profile->email }}</td>
+                            <td>{{ $profile->user->email }}</td>
                             <td>
                                 <a href="{{ route('userprofiles.show', $profile->id) }}" class="btn btn-info">Voir</a>  
                             </td>

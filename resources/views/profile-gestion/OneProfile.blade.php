@@ -16,6 +16,6 @@
         </div>
     </div>
 
-    <a href="{{ route('userprofiles.index') }}" class="btn btn-primary mt-3">Retour</a>
+    <a href="{{ route('events.index') }}" class="btn btn-primary mt-3">Retour</a>
 </div>
 @endsection
